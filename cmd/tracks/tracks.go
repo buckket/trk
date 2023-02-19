@@ -180,7 +180,11 @@ func loop() {
 				glib.IdleAdd(func() {
 					if currentTrain == nil || status.Train.Id != currentTrain.Id {
 						currentTrain = &status.Train
-						sendNotification(notifier, "New Train", fmt.Sprintf("Welcome to <b>%s</b> (It's a %s)", status.Train.DisplayName, status.Train.SeriesDisplay))
+						article := "a"
+						if strings.Contains("aeiou", strings.ToLower(status.Train.SeriesDisplay[:1])) {
+							article = "an"
+						}
+						sendNotification(notifier, "New Train", fmt.Sprintf("Welcome to <b>%s</b> (It's %s %s)", status.Train.DisplayName, article, status.Train.SeriesDisplay))
 						labelTrain.SetLabel("Train: " + status.Train.DisplayName)
 						buildTransferMenu(currentTrip)
 					}
